@@ -1,4 +1,5 @@
-from django.shortcuts import render, JsonResponse
+from django.shortcuts import render
+from django.http import JsonResponse
 from .recommender import *
 import cv2
 import numpy as np
@@ -12,7 +13,7 @@ def homePage(request):
 # and returns a response with the recommended gear in JSON format
 
 def getGear(request):
-    image = request.FILES['image']
+    image = request.POST['image']
     # convert the image to opencv image
     image = cv2.imdecode(np.fromstring(image.read(), np.uint8), cv2.IMREAD_UNCHANGED)
     print(image.shape)
