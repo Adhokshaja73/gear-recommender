@@ -1,12 +1,16 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from .recommender import *
-import cv2
-import numpy as np
+from .models import *
 # Create your views here.
 # a function to return homepage
 def homePage(request):
-    return render(request, 'home.html')
+    # get the video from the database
+    video = Videos.objects.all()
+    # add the video to the context
+    context = {'video': video}
+    # render the homepage
+    return render(request, 'home.html', context)
 
 # this function takes post request with parameters
 # 1 : image

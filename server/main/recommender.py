@@ -1,8 +1,9 @@
 
 import pandas as pd
-
-
-
+import matplotlib.pyplot as plt
+import cv2
+import numpy as np
+from math import sqrt
 
 # function that detects if there is slope in the image
 def detectSlope(image):
