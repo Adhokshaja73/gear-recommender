@@ -116,7 +116,58 @@
                                             <div class="col">
                                                 <span
                                                     class="h6 font-semibold text-muted text-sm d-block mb-2">Description</span>
-                                                <span class="h3 font-bold mb-0">This is the content</span>
+                                                <span class="h3 font-bold mb-0">
+                                                    <video id="player" playsinline controls data-poster="/path/to/poster.jpg" class="w-100">
+                                                        <source src="/1.mp4" type="video/mp4" />
+                                                      
+                                                        <!-- Captions are optional -->
+                                                        <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
+                                                      </video>
+                                                </span>
+                                                <div class="screenshot">
+                                                    <img id="screenshot" src="" alt="screenshot" />
+                                                </div>
+                                                <div class="cropped">
+                                                    <img id="cropped" src="" alt="cropped" />
+                                                </div>
+                                                <script>
+                                                    //take screen shot at every 5 seconds and show it in screenshot div
+                                                    var video = document.getElementById('player');
+                                                    var screenshot = document.getElementById('screenshot');
+                                                    var canvas = document.createElement('canvas');
+                                                    var context = canvas.getContext('2d');
+                                                    var videoObj = { "video": true };
+                                                    var errBack = function (error) {
+                                                        console.log("Video capture error: ", error.code);
+                                                    };
+                                                    var i = 0;
+                                                    setInterval(function () {
+                                                        context.drawImage(video, 0, 0, 300, 150);
+                                                        screenshot.src = canvas.toDataURL('image/png');
+                                                        i++;
+                                                    }, 5000);
+
+                                                    //crop the screenshot by 50% and show it in screenshot div
+                                                    var cropped = document.getElementById('cropped');
+                                                    var crop = function () {
+                                                        var width = screenshot.width;
+                                                        var height = screenshot.height;
+                                                        canvas.width = width;
+                                                        canvas.height = height;
+                                                        context.drawImage(screenshot, 0, 0, width, height);
+                                                        var imageData = context.getImageData(0, 0, width, height);
+                                                        var data = imageData.data;
+                                                        for (var i = 0; i < data.length; i += 4) {
+                                                            data[i] = data[i] / 2;
+                                                            data[i + 1] = data[i + 1] / 2;
+                                                            data[i + 2] = data[i + 2] / 2;
+                                                        }
+                                                        context.putImageData(imageData, 0, 0);
+                                                        cropped.src = canvas.toDataURL('image/png');
+                                                    };
+
+
+                                                </script>
                                             </div>
                                         </div>
                                     </div>
