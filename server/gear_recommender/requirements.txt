@@ -1,5 +1,8 @@
+Django
 numpy 
 cython
 matplotlib
 jupyter
-opencv-python			
+opencv-python	
+pandas		
+scikit-learn
