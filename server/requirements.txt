@@ -3,4 +3,3 @@ cython
 matplotlib
 jupyter
 opencv-python			
-pandas
