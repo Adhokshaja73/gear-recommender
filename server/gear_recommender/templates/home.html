@@ -9,6 +9,7 @@
 
     /* Bootstrap Icons */
     @import url("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.0/font/bootstrap-icons.min.css");
+    
 </style>
 <div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
     <!-- Vertical Navbar -->
@@ -127,8 +128,8 @@
                                                 <div class="screenshot">
                                                     <img id="screenshot" src="" alt="screenshot" />
                                                 </div>
-                                                <div class="cropped">
-                                                    <img id="cropped" src="" alt="cropped" />
+                                                <!-- <div class="cropped">
+                                                    <img id="cropped" src="" alt="cropped" /> -->
                                                 </div>
                                                 <script>
                                                     //take screen shot at every 5 seconds and show it in screenshot div
@@ -144,27 +145,49 @@
                                                     setInterval(function () {
                                                         context.drawImage(video, 0, 0, 300, 150);
                                                         screenshot.src = canvas.toDataURL('image/png');
+                                                        image = screenshot.src
+
+
+                                                        $.ajax({
+                                                            type: 'POST',
+                                                            url: "get_gear",
+
+                                                            data:
+                                                            {
+                                                                image : image,
+                                                                index : 0,
+                                                                csrfmiddlewaretoken: $('{% csrf_token %}').val()
+
+                                                            },
+
+                                                            <!-- TODO text to Voice-->
+                                                            success: function (response) {
+                                                                console.log(response)
+                                                            },
+                                                        })
+
+
                                                         i++;
                                                     }, 5000);
 
                                                     //crop the screenshot by 50% and show it in screenshot div
-                                                    var cropped = document.getElementById('cropped');
-                                                    var crop = function () {
-                                                        var width = screenshot.width;
-                                                        var height = screenshot.height;
-                                                        canvas.width = width;
-                                                        canvas.height = height;
-                                                        context.drawImage(screenshot, 0, 0, width, height);
-                                                        var imageData = context.getImageData(0, 0, width, height);
-                                                        var data = imageData.data;
-                                                        for (var i = 0; i < data.length; i += 4) {
-                                                            data[i] = data[i] / 2;
-                                                            data[i + 1] = data[i + 1] / 2;
-                                                            data[i + 2] = data[i + 2] / 2;
-                                                        }
-                                                        context.putImageData(imageData, 0, 0);
-                                                        cropped.src = canvas.toDataURL('image/png');
-                                                    };
+                                                    // var cropped = document.getElementById('cropped');
+                                                    // var crop = function () {
+                                                    //     var width = screenshot.width;
+                                                    //     var height = screenshot.height;
+                                                    //     canvas.width = width;
+                                                    //     canvas.height = height;
+                                                    //     context.drawImage(screenshot, 0, 0, width, height);
+                                                    //     var imageData = context.getImageData(0, 0, width, height);
+                                                    //     var data = imageData.data;
+                                                    //     for (var i = 0; i < data.length; i += 4) {
+                                                    //         data[i] = data[i] / 2;
+                                                    //         data[i + 1] = data[i + 1] / 2;
+                                                    //         data[i + 2] = data[i + 2] / 2;
+                                                    //     }
+                                                    //     context.putImageData(imageData, 0, 0);
+                                                    //     cropped.src = canvas.toDataURL('image/png');
+                                                    // };
 
 
                                                 </script>

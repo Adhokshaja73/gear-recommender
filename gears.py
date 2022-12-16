@@ -1,29 +1,29 @@
 
 import numpy as np
-import os
+
 import pickle
 # save the model to disk
 
 # convert the code below into a class
-class GearRecommender:
+class Recommender:
+
     def __init__(self):
-      filePath = os.path.join( os.getcwd(), 'model.sav')
-      self.loaded_model = pickle.load(open(filePath, 'rb'))
+      filename = 'finalized_model.sav'
+      self.loaded_model = pickle.load(open(filename, 'rb'))
 
     
     def getGear(self, image, speed, rpm, ):
       slope = int(self.countPixels(image) > 75)
       y_pred = self.loaded_model.predict([[speed,rpm, slope]])
-      
-      return(int(y_pred[0]))
+      return(y_pred)
 
     def countPixels(self, image):
-      avgColorMap = self.getRoadColor(image)
+      avgColorMap = self.getRoadColor()
       # TODO adjust these parameters based on shape of the image
-      areaMinX = 50
-      areaMaxX = 250
-      areaMinY = 30
-      areaMaxY = 80
+      areaMinX = 150
+      areaMaxX = 400
+      areaMinY = 50
+      areaMaxY = 400
       count = 0
       pixelCount = 0
       for i in range(areaMinX, areaMaxX):
@@ -51,9 +51,9 @@ class GearRecommender:
       avgColor = [0,0,0]
       diff = [0,0,0]
       # TODO adjust these xys based on shape of the input image
-      sampleMinX = 100
-      sampleMaxX = 130
-      sampleY = 120
+      sampleMinX = 220
+      sampleMaxX = 350
+      sampleY = 350
 
       for i in range(sampleMinX, sampleMaxX):
         currentPixel = image[sampleY][i]
